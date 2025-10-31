@@ -1,0 +1,1656 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "2c910b9a",
+   "metadata": {
+    "_execution_state": "idle",
+    "_uuid": "051d70d956493feee0c6d64651c6a088724dca2a",
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:03.293782Z",
+     "iopub.status.busy": "2025-10-31T13:23:03.291325Z",
+     "iopub.status.idle": "2025-10-31T13:23:04.740529Z",
+     "shell.execute_reply": "2025-10-31T13:23:04.738587Z"
+    },
+    "papermill": {
+     "duration": 1.462199,
+     "end_time": "2025-10-31T13:23:04.743106",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:03.280907",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "── \u001b[1mAttaching core tidyverse packages\u001b[22m ──────────────────────── tidyverse 2.0.0 ──\n",
+      "\u001b[32m✔\u001b[39m \u001b[34mdplyr    \u001b[39m 1.1.4     \u001b[32m✔\u001b[39m \u001b[34mreadr    \u001b[39m 2.1.5\n",
+      "\u001b[32m✔\u001b[39m \u001b[34mforcats  \u001b[39m 1.0.0     \u001b[32m✔\u001b[39m \u001b[34mstringr  \u001b[39m 1.5.1\n",
+      "\u001b[32m✔\u001b[39m \u001b[34mggplot2  \u001b[39m 3.5.1     \u001b[32m✔\u001b[39m \u001b[34mtibble   \u001b[39m 3.2.1\n",
+      "\u001b[32m✔\u001b[39m \u001b[34mlubridate\u001b[39m 1.9.3     \u001b[32m✔\u001b[39m \u001b[34mtidyr    \u001b[39m 1.3.1\n",
+      "\u001b[32m✔\u001b[39m \u001b[34mpurrr    \u001b[39m 1.0.2     \n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "── \u001b[1mConflicts\u001b[22m ────────────────────────────────────────── tidyverse_conflicts() ──\n",
+      "\u001b[31m✖\u001b[39m \u001b[34mdplyr\u001b[39m::\u001b[32mfilter()\u001b[39m masks \u001b[34mstats\u001b[39m::filter()\n",
+      "\u001b[31m✖\u001b[39m \u001b[34mdplyr\u001b[39m::\u001b[32mlag()\u001b[39m    masks \u001b[34mstats\u001b[39m::lag()\n",
+      "\u001b[36mℹ\u001b[39m Use the conflicted package (\u001b[3m\u001b[34m<http://conflicted.r-lib.org/>\u001b[39m\u001b[23m) to force all conflicts to become errors\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "'assignment-files'"
+      ],
+      "text/latex": [
+       "'assignment-files'"
+      ],
+      "text/markdown": [
+       "'assignment-files'"
+      ],
+      "text/plain": [
+       "[1] \"assignment-files\""
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# This R environment comes with many helpful analytics packages installed\n",
+    "# It is defined by the kaggle/rstats Docker image: https://github.com/kaggle/docker-rstats\n",
+    "# For example, here's a helpful package to load\n",
+    "\n",
+    "library(tidyverse) # metapackage of all tidyverse packages\n",
+    "\n",
+    "# Input data files are available in the read-only \"../input/\" directory\n",
+    "# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory\n",
+    "\n",
+    "list.files(path = \"../input\")\n",
+    "\n",
+    "# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using \"Save & Run All\" \n",
+    "# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "79f8d9c0",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007165,
+     "end_time": "2025-10-31T13:23:04.757749",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.750584",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# 3. Functions in R\n",
+    "## 3.1 Function Forms\n",
+    "### 3.1.1 Prefix Functions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "8a3448a2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:04.805552Z",
+     "iopub.status.busy": "2025-10-31T13:23:04.774108Z",
+     "iopub.status.idle": "2025-10-31T13:23:04.821750Z",
+     "shell.execute_reply": "2025-10-31T13:23:04.819916Z"
+    },
+    "papermill": {
+     "duration": 0.059417,
+     "end_time": "2025-10-31T13:23:04.824342",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.764925",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "15"
+      ],
+      "text/latex": [
+       "15"
+      ],
+      "text/markdown": [
+       "15"
+      ],
+      "text/plain": [
+       "[1] 15"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# sum of numbers\n",
+    "sum(1,2,3,4,5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "81c2604f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:04.842649Z",
+     "iopub.status.busy": "2025-10-31T13:23:04.841006Z",
+     "iopub.status.idle": "2025-10-31T13:23:04.860414Z",
+     "shell.execute_reply": "2025-10-31T13:23:04.858593Z"
+    },
+    "papermill": {
+     "duration": 0.031255,
+     "end_time": "2025-10-31T13:23:04.862848",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.831593",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "30"
+      ],
+      "text/latex": [
+       "30"
+      ],
+      "text/markdown": [
+       "30"
+      ],
+      "text/plain": [
+       "[1] 30"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Mean of a vector\n",
+    "v = c(10, 20, 30, 40, 50)\n",
+    "mean(v)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "09d1f5c4",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007847,
+     "end_time": "2025-10-31T13:23:04.878125",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.870278",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "### 3.1.2 Infix Functions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "0c870a4b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:04.896304Z",
+     "iopub.status.busy": "2025-10-31T13:23:04.894698Z",
+     "iopub.status.idle": "2025-10-31T13:23:04.911857Z",
+     "shell.execute_reply": "2025-10-31T13:23:04.910083Z"
+    },
+    "papermill": {
+     "duration": 0.029167,
+     "end_time": "2025-10-31T13:23:04.914459",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.885292",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "8"
+      ],
+      "text/latex": [
+       "8"
+      ],
+      "text/markdown": [
+       "8"
+      ],
+      "text/plain": [
+       "[1] 8"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Additions\n",
+    "5+3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "4165aa0c",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:04.934412Z",
+     "iopub.status.busy": "2025-10-31T13:23:04.932723Z",
+     "iopub.status.idle": "2025-10-31T13:23:04.951216Z",
+     "shell.execute_reply": "2025-10-31T13:23:04.949339Z"
+    },
+    "papermill": {
+     "duration": 0.031602,
+     "end_time": "2025-10-31T13:23:04.954025",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.922423",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "28"
+      ],
+      "text/latex": [
+       "28"
+      ],
+      "text/markdown": [
+       "28"
+      ],
+      "text/plain": [
+       "[1] 28"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Multiplication\n",
+    "4*7"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "7a8a672f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:04.973046Z",
+     "iopub.status.busy": "2025-10-31T13:23:04.971373Z",
+     "iopub.status.idle": "2025-10-31T13:23:04.988653Z",
+     "shell.execute_reply": "2025-10-31T13:23:04.986828Z"
+    },
+    "papermill": {
+     "duration": 0.029757,
+     "end_time": "2025-10-31T13:23:04.991407",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.961650",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "TRUE"
+      ],
+      "text/latex": [
+       "TRUE"
+      ],
+      "text/markdown": [
+       "TRUE"
+      ],
+      "text/plain": [
+       "[1] TRUE"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "10>4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "536590f0",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007837,
+     "end_time": "2025-10-31T13:23:05.006985",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:04.999148",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "**Custom Infix Functions:**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "0e42df5c",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.026139Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.024573Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.038617Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.036856Z"
+    },
+    "papermill": {
+     "duration": 0.026615,
+     "end_time": "2025-10-31T13:23:05.041383",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.014768",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "`%concat%` <- function(a,b){\n",
+    "    paste(a,b)\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "9384afaa",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.060595Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.059013Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.076258Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.074432Z"
+    },
+    "papermill": {
+     "duration": 0.029926,
+     "end_time": "2025-10-31T13:23:05.078973",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.049047",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "'Data Science'"
+      ],
+      "text/latex": [
+       "'Data Science'"
+      ],
+      "text/markdown": [
+       "'Data Science'"
+      ],
+      "text/plain": [
+       "[1] \"Data Science\""
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "\"Data\" %concat% \"Science\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2587d64e",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007861,
+     "end_time": "2025-10-31T13:23:05.094753",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.086892",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "### 3.1.3 Replacement Function"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "8323c23a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.114363Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.112679Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.132831Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.131112Z"
+    },
+    "papermill": {
+     "duration": 0.032814,
+     "end_time": "2025-10-31T13:23:05.135578",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.102764",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df <- data.frame(A=1:3, B=4:6)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "afe833ff",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.154805Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.153215Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.173838Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.171715Z"
+    },
+    "papermill": {
+     "duration": 0.033364,
+     "end_time": "2025-10-31T13:23:05.176625",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.143261",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "  Alpha Beta\n",
+      "1     1    4\n",
+      "2     2    5\n",
+      "3     3    6\n"
+     ]
+    }
+   ],
+   "source": [
+    "names(df) <- c(\"Alpha\", \"Beta\")\n",
+    "print(df)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2f2c7d8f",
+   "metadata": {
+    "papermill": {
+     "duration": 0.00781,
+     "end_time": "2025-10-31T13:23:05.192407",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.184597",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "### 3.1.4 Special Functions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "4d143887",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.212053Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.210401Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.229745Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.227593Z"
+    },
+    "papermill": {
+     "duration": 0.032172,
+     "end_time": "2025-10-31T13:23:05.232499",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.200327",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1] \"x is greater than 5\"\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Conditional Statement\n",
+    "x <- 10\n",
+    "if(x>5){\n",
+    "    print(\"x is greater than 5\")\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "9150c213",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.252210Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.250510Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.273966Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.271477Z"
+    },
+    "papermill": {
+     "duration": 0.03663,
+     "end_time": "2025-10-31T13:23:05.277205",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.240575",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1] \"Iteration 1\"\n",
+      "[1] \"Iteration 2\"\n",
+      "[1] \"Iteration 3\"\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Loop\n",
+    "for (i in 1:3){\n",
+    "    print(paste(\"Iteration\",i))\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "57f9bfcd",
+   "metadata": {
+    "papermill": {
+     "duration": 0.00811,
+     "end_time": "2025-10-31T13:23:05.293347",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.285237",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "### 3.2.1 function Components\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "52f5ba6d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.313463Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.311836Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.327047Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.325271Z"
+    },
+    "papermill": {
+     "duration": 0.028873,
+     "end_time": "2025-10-31T13:23:05.330499",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.301626",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "f02 <- function(x, y){\n",
+    "    x + y\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "9f7bdd24",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.350021Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.348421Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.365808Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.364023Z"
+    },
+    "papermill": {
+     "duration": 0.030149,
+     "end_time": "2025-10-31T13:23:05.368580",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.338431",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "7"
+      ],
+      "text/latex": [
+       "7"
+      ],
+      "text/markdown": [
+       "7"
+      ],
+      "text/plain": [
+       "[1] 7"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "f02(x=4, y=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "a3ebcbd2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.389153Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.387519Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.404248Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.402424Z"
+    },
+    "papermill": {
+     "duration": 0.029517,
+     "end_time": "2025-10-31T13:23:05.406707",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.377190",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "$x\n",
+       "\n",
+       "\n",
+       "$y\n",
+       "\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "formals(f02)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "34900cb4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.426750Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.425147Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.441852Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.440129Z"
+    },
+    "papermill": {
+     "duration": 0.029405,
+     "end_time": "2025-10-31T13:23:05.444239",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.414834",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{\n",
+       "    x + y\n",
+       "}"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "body(f02)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "00f6eab7",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.464227Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.462560Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.479243Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.477429Z"
+    },
+    "papermill": {
+     "duration": 0.029254,
+     "end_time": "2025-10-31T13:23:05.481643",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.452389",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<environment: R_GlobalEnv>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "environment(f02)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "3b3260a6",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.502651Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.501009Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.516052Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.514218Z"
+    },
+    "papermill": {
+     "duration": 0.02864,
+     "end_time": "2025-10-31T13:23:05.518586",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.489946",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "multiply_numbers <- function(x,y){\n",
+    "    x*y\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "381931e4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.538959Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.537285Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.551921Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.550054Z"
+    },
+    "papermill": {
+     "duration": 0.027723,
+     "end_time": "2025-10-31T13:23:05.554667",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.526944",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "square <- function(x){\n",
+    "    sqrt(x)\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "8517dba2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.575525Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.573872Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.591461Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.589632Z"
+    },
+    "papermill": {
+     "duration": 0.030653,
+     "end_time": "2025-10-31T13:23:05.593971",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.563318",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "5"
+      ],
+      "text/latex": [
+       "5"
+      ],
+      "text/markdown": [
+       "5"
+      ],
+      "text/plain": [
+       "[1] 5"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "square(x=25)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "8affedd2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.628382Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.626836Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.643309Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.641501Z"
+    },
+    "papermill": {
+     "duration": 0.043293,
+     "end_time": "2025-10-31T13:23:05.645724",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.602431",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "25"
+      ],
+      "text/latex": [
+       "25"
+      ],
+      "text/markdown": [
+       "25"
+      ],
+      "text/plain": [
+       "[1] 25"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "multiply_numbers(5,5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "9ec6b905",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.666912Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.665287Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.679513Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.677674Z"
+    },
+    "papermill": {
+     "duration": 0.027533,
+     "end_time": "2025-10-31T13:23:05.682052",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.654519",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "greet <- function(x){\n",
+    "    sprintf(\"Hello, %s! \", x)\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "addad4e9",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.703916Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.702289Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.722121Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.719712Z"
+    },
+    "papermill": {
+     "duration": 0.033969,
+     "end_time": "2025-10-31T13:23:05.725232",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.691263",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "'Hello, Bob! '"
+      ],
+      "text/latex": [
+       "'Hello, Bob! '"
+      ],
+      "text/markdown": [
+       "'Hello, Bob! '"
+      ],
+      "text/plain": [
+       "[1] \"Hello, Bob! \""
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "greet(\"Bob\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "5af24848",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.746741Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.745146Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.816507Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.813750Z"
+    },
+    "papermill": {
+     "duration": 0.085497,
+     "end_time": "2025-10-31T13:23:05.819831",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.734334",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<table class=\"dataframe\">\n",
+       "<caption>A data.frame: 32 × 11</caption>\n",
+       "<thead>\n",
+       "\t<tr><th></th><th scope=col>mpg</th><th scope=col>cyl</th><th scope=col>disp</th><th scope=col>hp</th><th scope=col>drat</th><th scope=col>wt</th><th scope=col>qsec</th><th scope=col>vs</th><th scope=col>am</th><th scope=col>gear</th><th scope=col>carb</th></tr>\n",
+       "\t<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>\n",
+       "</thead>\n",
+       "<tbody>\n",
+       "\t<tr><th scope=row>Mazda RX4</th><td>21.0</td><td>6</td><td>160.0</td><td>110</td><td>3.90</td><td>2.620</td><td>16.46</td><td>0</td><td>1</td><td>4</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Mazda RX4 Wag</th><td>21.0</td><td>6</td><td>160.0</td><td>110</td><td>3.90</td><td>2.875</td><td>17.02</td><td>0</td><td>1</td><td>4</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Datsun 710</th><td>22.8</td><td>4</td><td>108.0</td><td> 93</td><td>3.85</td><td>2.320</td><td>18.61</td><td>1</td><td>1</td><td>4</td><td>1</td></tr>\n",
+       "\t<tr><th scope=row>Hornet 4 Drive</th><td>21.4</td><td>6</td><td>258.0</td><td>110</td><td>3.08</td><td>3.215</td><td>19.44</td><td>1</td><td>0</td><td>3</td><td>1</td></tr>\n",
+       "\t<tr><th scope=row>Hornet Sportabout</th><td>18.7</td><td>8</td><td>360.0</td><td>175</td><td>3.15</td><td>3.440</td><td>17.02</td><td>0</td><td>0</td><td>3</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Valiant</th><td>18.1</td><td>6</td><td>225.0</td><td>105</td><td>2.76</td><td>3.460</td><td>20.22</td><td>1</td><td>0</td><td>3</td><td>1</td></tr>\n",
+       "\t<tr><th scope=row>Duster 360</th><td>14.3</td><td>8</td><td>360.0</td><td>245</td><td>3.21</td><td>3.570</td><td>15.84</td><td>0</td><td>0</td><td>3</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Merc 240D</th><td>24.4</td><td>4</td><td>146.7</td><td> 62</td><td>3.69</td><td>3.190</td><td>20.00</td><td>1</td><td>0</td><td>4</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Merc 230</th><td>22.8</td><td>4</td><td>140.8</td><td> 95</td><td>3.92</td><td>3.150</td><td>22.90</td><td>1</td><td>0</td><td>4</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Merc 280</th><td>19.2</td><td>6</td><td>167.6</td><td>123</td><td>3.92</td><td>3.440</td><td>18.30</td><td>1</td><td>0</td><td>4</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Merc 280C</th><td>17.8</td><td>6</td><td>167.6</td><td>123</td><td>3.92</td><td>3.440</td><td>18.90</td><td>1</td><td>0</td><td>4</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Merc 450SE</th><td>16.4</td><td>8</td><td>275.8</td><td>180</td><td>3.07</td><td>4.070</td><td>17.40</td><td>0</td><td>0</td><td>3</td><td>3</td></tr>\n",
+       "\t<tr><th scope=row>Merc 450SL</th><td>17.3</td><td>8</td><td>275.8</td><td>180</td><td>3.07</td><td>3.730</td><td>17.60</td><td>0</td><td>0</td><td>3</td><td>3</td></tr>\n",
+       "\t<tr><th scope=row>Merc 450SLC</th><td>15.2</td><td>8</td><td>275.8</td><td>180</td><td>3.07</td><td>3.780</td><td>18.00</td><td>0</td><td>0</td><td>3</td><td>3</td></tr>\n",
+       "\t<tr><th scope=row>Cadillac Fleetwood</th><td>10.4</td><td>8</td><td>472.0</td><td>205</td><td>2.93</td><td>5.250</td><td>17.98</td><td>0</td><td>0</td><td>3</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Lincoln Continental</th><td>10.4</td><td>8</td><td>460.0</td><td>215</td><td>3.00</td><td>5.424</td><td>17.82</td><td>0</td><td>0</td><td>3</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Chrysler Imperial</th><td>14.7</td><td>8</td><td>440.0</td><td>230</td><td>3.23</td><td>5.345</td><td>17.42</td><td>0</td><td>0</td><td>3</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Fiat 128</th><td>32.4</td><td>4</td><td> 78.7</td><td> 66</td><td>4.08</td><td>2.200</td><td>19.47</td><td>1</td><td>1</td><td>4</td><td>1</td></tr>\n",
+       "\t<tr><th scope=row>Honda Civic</th><td>30.4</td><td>4</td><td> 75.7</td><td> 52</td><td>4.93</td><td>1.615</td><td>18.52</td><td>1</td><td>1</td><td>4</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Toyota Corolla</th><td>33.9</td><td>4</td><td> 71.1</td><td> 65</td><td>4.22</td><td>1.835</td><td>19.90</td><td>1</td><td>1</td><td>4</td><td>1</td></tr>\n",
+       "\t<tr><th scope=row>Toyota Corona</th><td>21.5</td><td>4</td><td>120.1</td><td> 97</td><td>3.70</td><td>2.465</td><td>20.01</td><td>1</td><td>0</td><td>3</td><td>1</td></tr>\n",
+       "\t<tr><th scope=row>Dodge Challenger</th><td>15.5</td><td>8</td><td>318.0</td><td>150</td><td>2.76</td><td>3.520</td><td>16.87</td><td>0</td><td>0</td><td>3</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>AMC Javelin</th><td>15.2</td><td>8</td><td>304.0</td><td>150</td><td>3.15</td><td>3.435</td><td>17.30</td><td>0</td><td>0</td><td>3</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Camaro Z28</th><td>13.3</td><td>8</td><td>350.0</td><td>245</td><td>3.73</td><td>3.840</td><td>15.41</td><td>0</td><td>0</td><td>3</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Pontiac Firebird</th><td>19.2</td><td>8</td><td>400.0</td><td>175</td><td>3.08</td><td>3.845</td><td>17.05</td><td>0</td><td>0</td><td>3</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Fiat X1-9</th><td>27.3</td><td>4</td><td> 79.0</td><td> 66</td><td>4.08</td><td>1.935</td><td>18.90</td><td>1</td><td>1</td><td>4</td><td>1</td></tr>\n",
+       "\t<tr><th scope=row>Porsche 914-2</th><td>26.0</td><td>4</td><td>120.3</td><td> 91</td><td>4.43</td><td>2.140</td><td>16.70</td><td>0</td><td>1</td><td>5</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Lotus Europa</th><td>30.4</td><td>4</td><td> 95.1</td><td>113</td><td>3.77</td><td>1.513</td><td>16.90</td><td>1</td><td>1</td><td>5</td><td>2</td></tr>\n",
+       "\t<tr><th scope=row>Ford Pantera L</th><td>15.8</td><td>8</td><td>351.0</td><td>264</td><td>4.22</td><td>3.170</td><td>14.50</td><td>0</td><td>1</td><td>5</td><td>4</td></tr>\n",
+       "\t<tr><th scope=row>Ferrari Dino</th><td>19.7</td><td>6</td><td>145.0</td><td>175</td><td>3.62</td><td>2.770</td><td>15.50</td><td>0</td><td>1</td><td>5</td><td>6</td></tr>\n",
+       "\t<tr><th scope=row>Maserati Bora</th><td>15.0</td><td>8</td><td>301.0</td><td>335</td><td>3.54</td><td>3.570</td><td>14.60</td><td>0</td><td>1</td><td>5</td><td>8</td></tr>\n",
+       "\t<tr><th scope=row>Volvo 142E</th><td>21.4</td><td>4</td><td>121.0</td><td>109</td><td>4.11</td><td>2.780</td><td>18.60</td><td>1</td><td>1</td><td>4</td><td>2</td></tr>\n",
+       "</tbody>\n",
+       "</table>\n"
+      ],
+      "text/latex": [
+       "A data.frame: 32 × 11\n",
+       "\\begin{tabular}{r|lllllllllll}\n",
+       "  & mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\\\\\n",
+       "  & <dbl> & <dbl> & <dbl> & <dbl> & <dbl> & <dbl> & <dbl> & <dbl> & <dbl> & <dbl> & <dbl>\\\\\n",
+       "\\hline\n",
+       "\tMazda RX4 & 21.0 & 6 & 160.0 & 110 & 3.90 & 2.620 & 16.46 & 0 & 1 & 4 & 4\\\\\n",
+       "\tMazda RX4 Wag & 21.0 & 6 & 160.0 & 110 & 3.90 & 2.875 & 17.02 & 0 & 1 & 4 & 4\\\\\n",
+       "\tDatsun 710 & 22.8 & 4 & 108.0 &  93 & 3.85 & 2.320 & 18.61 & 1 & 1 & 4 & 1\\\\\n",
+       "\tHornet 4 Drive & 21.4 & 6 & 258.0 & 110 & 3.08 & 3.215 & 19.44 & 1 & 0 & 3 & 1\\\\\n",
+       "\tHornet Sportabout & 18.7 & 8 & 360.0 & 175 & 3.15 & 3.440 & 17.02 & 0 & 0 & 3 & 2\\\\\n",
+       "\tValiant & 18.1 & 6 & 225.0 & 105 & 2.76 & 3.460 & 20.22 & 1 & 0 & 3 & 1\\\\\n",
+       "\tDuster 360 & 14.3 & 8 & 360.0 & 245 & 3.21 & 3.570 & 15.84 & 0 & 0 & 3 & 4\\\\\n",
+       "\tMerc 240D & 24.4 & 4 & 146.7 &  62 & 3.69 & 3.190 & 20.00 & 1 & 0 & 4 & 2\\\\\n",
+       "\tMerc 230 & 22.8 & 4 & 140.8 &  95 & 3.92 & 3.150 & 22.90 & 1 & 0 & 4 & 2\\\\\n",
+       "\tMerc 280 & 19.2 & 6 & 167.6 & 123 & 3.92 & 3.440 & 18.30 & 1 & 0 & 4 & 4\\\\\n",
+       "\tMerc 280C & 17.8 & 6 & 167.6 & 123 & 3.92 & 3.440 & 18.90 & 1 & 0 & 4 & 4\\\\\n",
+       "\tMerc 450SE & 16.4 & 8 & 275.8 & 180 & 3.07 & 4.070 & 17.40 & 0 & 0 & 3 & 3\\\\\n",
+       "\tMerc 450SL & 17.3 & 8 & 275.8 & 180 & 3.07 & 3.730 & 17.60 & 0 & 0 & 3 & 3\\\\\n",
+       "\tMerc 450SLC & 15.2 & 8 & 275.8 & 180 & 3.07 & 3.780 & 18.00 & 0 & 0 & 3 & 3\\\\\n",
+       "\tCadillac Fleetwood & 10.4 & 8 & 472.0 & 205 & 2.93 & 5.250 & 17.98 & 0 & 0 & 3 & 4\\\\\n",
+       "\tLincoln Continental & 10.4 & 8 & 460.0 & 215 & 3.00 & 5.424 & 17.82 & 0 & 0 & 3 & 4\\\\\n",
+       "\tChrysler Imperial & 14.7 & 8 & 440.0 & 230 & 3.23 & 5.345 & 17.42 & 0 & 0 & 3 & 4\\\\\n",
+       "\tFiat 128 & 32.4 & 4 &  78.7 &  66 & 4.08 & 2.200 & 19.47 & 1 & 1 & 4 & 1\\\\\n",
+       "\tHonda Civic & 30.4 & 4 &  75.7 &  52 & 4.93 & 1.615 & 18.52 & 1 & 1 & 4 & 2\\\\\n",
+       "\tToyota Corolla & 33.9 & 4 &  71.1 &  65 & 4.22 & 1.835 & 19.90 & 1 & 1 & 4 & 1\\\\\n",
+       "\tToyota Corona & 21.5 & 4 & 120.1 &  97 & 3.70 & 2.465 & 20.01 & 1 & 0 & 3 & 1\\\\\n",
+       "\tDodge Challenger & 15.5 & 8 & 318.0 & 150 & 2.76 & 3.520 & 16.87 & 0 & 0 & 3 & 2\\\\\n",
+       "\tAMC Javelin & 15.2 & 8 & 304.0 & 150 & 3.15 & 3.435 & 17.30 & 0 & 0 & 3 & 2\\\\\n",
+       "\tCamaro Z28 & 13.3 & 8 & 350.0 & 245 & 3.73 & 3.840 & 15.41 & 0 & 0 & 3 & 4\\\\\n",
+       "\tPontiac Firebird & 19.2 & 8 & 400.0 & 175 & 3.08 & 3.845 & 17.05 & 0 & 0 & 3 & 2\\\\\n",
+       "\tFiat X1-9 & 27.3 & 4 &  79.0 &  66 & 4.08 & 1.935 & 18.90 & 1 & 1 & 4 & 1\\\\\n",
+       "\tPorsche 914-2 & 26.0 & 4 & 120.3 &  91 & 4.43 & 2.140 & 16.70 & 0 & 1 & 5 & 2\\\\\n",
+       "\tLotus Europa & 30.4 & 4 &  95.1 & 113 & 3.77 & 1.513 & 16.90 & 1 & 1 & 5 & 2\\\\\n",
+       "\tFord Pantera L & 15.8 & 8 & 351.0 & 264 & 4.22 & 3.170 & 14.50 & 0 & 1 & 5 & 4\\\\\n",
+       "\tFerrari Dino & 19.7 & 6 & 145.0 & 175 & 3.62 & 2.770 & 15.50 & 0 & 1 & 5 & 6\\\\\n",
+       "\tMaserati Bora & 15.0 & 8 & 301.0 & 335 & 3.54 & 3.570 & 14.60 & 0 & 1 & 5 & 8\\\\\n",
+       "\tVolvo 142E & 21.4 & 4 & 121.0 & 109 & 4.11 & 2.780 & 18.60 & 1 & 1 & 4 & 2\\\\\n",
+       "\\end{tabular}\n"
+      ],
+      "text/markdown": [
+       "\n",
+       "A data.frame: 32 × 11\n",
+       "\n",
+       "| <!--/--> | mpg &lt;dbl&gt; | cyl &lt;dbl&gt; | disp &lt;dbl&gt; | hp &lt;dbl&gt; | drat &lt;dbl&gt; | wt &lt;dbl&gt; | qsec &lt;dbl&gt; | vs &lt;dbl&gt; | am &lt;dbl&gt; | gear &lt;dbl&gt; | carb &lt;dbl&gt; |\n",
+       "|---|---|---|---|---|---|---|---|---|---|---|---|\n",
+       "| Mazda RX4 | 21.0 | 6 | 160.0 | 110 | 3.90 | 2.620 | 16.46 | 0 | 1 | 4 | 4 |\n",
+       "| Mazda RX4 Wag | 21.0 | 6 | 160.0 | 110 | 3.90 | 2.875 | 17.02 | 0 | 1 | 4 | 4 |\n",
+       "| Datsun 710 | 22.8 | 4 | 108.0 |  93 | 3.85 | 2.320 | 18.61 | 1 | 1 | 4 | 1 |\n",
+       "| Hornet 4 Drive | 21.4 | 6 | 258.0 | 110 | 3.08 | 3.215 | 19.44 | 1 | 0 | 3 | 1 |\n",
+       "| Hornet Sportabout | 18.7 | 8 | 360.0 | 175 | 3.15 | 3.440 | 17.02 | 0 | 0 | 3 | 2 |\n",
+       "| Valiant | 18.1 | 6 | 225.0 | 105 | 2.76 | 3.460 | 20.22 | 1 | 0 | 3 | 1 |\n",
+       "| Duster 360 | 14.3 | 8 | 360.0 | 245 | 3.21 | 3.570 | 15.84 | 0 | 0 | 3 | 4 |\n",
+       "| Merc 240D | 24.4 | 4 | 146.7 |  62 | 3.69 | 3.190 | 20.00 | 1 | 0 | 4 | 2 |\n",
+       "| Merc 230 | 22.8 | 4 | 140.8 |  95 | 3.92 | 3.150 | 22.90 | 1 | 0 | 4 | 2 |\n",
+       "| Merc 280 | 19.2 | 6 | 167.6 | 123 | 3.92 | 3.440 | 18.30 | 1 | 0 | 4 | 4 |\n",
+       "| Merc 280C | 17.8 | 6 | 167.6 | 123 | 3.92 | 3.440 | 18.90 | 1 | 0 | 4 | 4 |\n",
+       "| Merc 450SE | 16.4 | 8 | 275.8 | 180 | 3.07 | 4.070 | 17.40 | 0 | 0 | 3 | 3 |\n",
+       "| Merc 450SL | 17.3 | 8 | 275.8 | 180 | 3.07 | 3.730 | 17.60 | 0 | 0 | 3 | 3 |\n",
+       "| Merc 450SLC | 15.2 | 8 | 275.8 | 180 | 3.07 | 3.780 | 18.00 | 0 | 0 | 3 | 3 |\n",
+       "| Cadillac Fleetwood | 10.4 | 8 | 472.0 | 205 | 2.93 | 5.250 | 17.98 | 0 | 0 | 3 | 4 |\n",
+       "| Lincoln Continental | 10.4 | 8 | 460.0 | 215 | 3.00 | 5.424 | 17.82 | 0 | 0 | 3 | 4 |\n",
+       "| Chrysler Imperial | 14.7 | 8 | 440.0 | 230 | 3.23 | 5.345 | 17.42 | 0 | 0 | 3 | 4 |\n",
+       "| Fiat 128 | 32.4 | 4 |  78.7 |  66 | 4.08 | 2.200 | 19.47 | 1 | 1 | 4 | 1 |\n",
+       "| Honda Civic | 30.4 | 4 |  75.7 |  52 | 4.93 | 1.615 | 18.52 | 1 | 1 | 4 | 2 |\n",
+       "| Toyota Corolla | 33.9 | 4 |  71.1 |  65 | 4.22 | 1.835 | 19.90 | 1 | 1 | 4 | 1 |\n",
+       "| Toyota Corona | 21.5 | 4 | 120.1 |  97 | 3.70 | 2.465 | 20.01 | 1 | 0 | 3 | 1 |\n",
+       "| Dodge Challenger | 15.5 | 8 | 318.0 | 150 | 2.76 | 3.520 | 16.87 | 0 | 0 | 3 | 2 |\n",
+       "| AMC Javelin | 15.2 | 8 | 304.0 | 150 | 3.15 | 3.435 | 17.30 | 0 | 0 | 3 | 2 |\n",
+       "| Camaro Z28 | 13.3 | 8 | 350.0 | 245 | 3.73 | 3.840 | 15.41 | 0 | 0 | 3 | 4 |\n",
+       "| Pontiac Firebird | 19.2 | 8 | 400.0 | 175 | 3.08 | 3.845 | 17.05 | 0 | 0 | 3 | 2 |\n",
+       "| Fiat X1-9 | 27.3 | 4 |  79.0 |  66 | 4.08 | 1.935 | 18.90 | 1 | 1 | 4 | 1 |\n",
+       "| Porsche 914-2 | 26.0 | 4 | 120.3 |  91 | 4.43 | 2.140 | 16.70 | 0 | 1 | 5 | 2 |\n",
+       "| Lotus Europa | 30.4 | 4 |  95.1 | 113 | 3.77 | 1.513 | 16.90 | 1 | 1 | 5 | 2 |\n",
+       "| Ford Pantera L | 15.8 | 8 | 351.0 | 264 | 4.22 | 3.170 | 14.50 | 0 | 1 | 5 | 4 |\n",
+       "| Ferrari Dino | 19.7 | 6 | 145.0 | 175 | 3.62 | 2.770 | 15.50 | 0 | 1 | 5 | 6 |\n",
+       "| Maserati Bora | 15.0 | 8 | 301.0 | 335 | 3.54 | 3.570 | 14.60 | 0 | 1 | 5 | 8 |\n",
+       "| Volvo 142E | 21.4 | 4 | 121.0 | 109 | 4.11 | 2.780 | 18.60 | 1 | 1 | 4 | 2 |\n",
+       "\n"
+      ],
+      "text/plain": [
+       "                    mpg  cyl disp  hp  drat wt    qsec  vs am gear carb\n",
+       "Mazda RX4           21.0 6   160.0 110 3.90 2.620 16.46 0  1  4    4   \n",
+       "Mazda RX4 Wag       21.0 6   160.0 110 3.90 2.875 17.02 0  1  4    4   \n",
+       "Datsun 710          22.8 4   108.0  93 3.85 2.320 18.61 1  1  4    1   \n",
+       "Hornet 4 Drive      21.4 6   258.0 110 3.08 3.215 19.44 1  0  3    1   \n",
+       "Hornet Sportabout   18.7 8   360.0 175 3.15 3.440 17.02 0  0  3    2   \n",
+       "Valiant             18.1 6   225.0 105 2.76 3.460 20.22 1  0  3    1   \n",
+       "Duster 360          14.3 8   360.0 245 3.21 3.570 15.84 0  0  3    4   \n",
+       "Merc 240D           24.4 4   146.7  62 3.69 3.190 20.00 1  0  4    2   \n",
+       "Merc 230            22.8 4   140.8  95 3.92 3.150 22.90 1  0  4    2   \n",
+       "Merc 280            19.2 6   167.6 123 3.92 3.440 18.30 1  0  4    4   \n",
+       "Merc 280C           17.8 6   167.6 123 3.92 3.440 18.90 1  0  4    4   \n",
+       "Merc 450SE          16.4 8   275.8 180 3.07 4.070 17.40 0  0  3    3   \n",
+       "Merc 450SL          17.3 8   275.8 180 3.07 3.730 17.60 0  0  3    3   \n",
+       "Merc 450SLC         15.2 8   275.8 180 3.07 3.780 18.00 0  0  3    3   \n",
+       "Cadillac Fleetwood  10.4 8   472.0 205 2.93 5.250 17.98 0  0  3    4   \n",
+       "Lincoln Continental 10.4 8   460.0 215 3.00 5.424 17.82 0  0  3    4   \n",
+       "Chrysler Imperial   14.7 8   440.0 230 3.23 5.345 17.42 0  0  3    4   \n",
+       "Fiat 128            32.4 4    78.7  66 4.08 2.200 19.47 1  1  4    1   \n",
+       "Honda Civic         30.4 4    75.7  52 4.93 1.615 18.52 1  1  4    2   \n",
+       "Toyota Corolla      33.9 4    71.1  65 4.22 1.835 19.90 1  1  4    1   \n",
+       "Toyota Corona       21.5 4   120.1  97 3.70 2.465 20.01 1  0  3    1   \n",
+       "Dodge Challenger    15.5 8   318.0 150 2.76 3.520 16.87 0  0  3    2   \n",
+       "AMC Javelin         15.2 8   304.0 150 3.15 3.435 17.30 0  0  3    2   \n",
+       "Camaro Z28          13.3 8   350.0 245 3.73 3.840 15.41 0  0  3    4   \n",
+       "Pontiac Firebird    19.2 8   400.0 175 3.08 3.845 17.05 0  0  3    2   \n",
+       "Fiat X1-9           27.3 4    79.0  66 4.08 1.935 18.90 1  1  4    1   \n",
+       "Porsche 914-2       26.0 4   120.3  91 4.43 2.140 16.70 0  1  5    2   \n",
+       "Lotus Europa        30.4 4    95.1 113 3.77 1.513 16.90 1  1  5    2   \n",
+       "Ford Pantera L      15.8 8   351.0 264 4.22 3.170 14.50 0  1  5    4   \n",
+       "Ferrari Dino        19.7 6   145.0 175 3.62 2.770 15.50 0  1  5    6   \n",
+       "Maserati Bora       15.0 8   301.0 335 3.54 3.570 14.60 0  1  5    8   \n",
+       "Volvo 142E          21.4 4   121.0 109 4.11 2.780 18.60 1  1  4    2   "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "mtcars"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "70c1188a",
+   "metadata": {
+    "papermill": {
+     "duration": 0.009142,
+     "end_time": "2025-10-31T13:23:05.838347",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.829205",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Exercises"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5ff11173",
+   "metadata": {
+    "papermill": {
+     "duration": 0.009115,
+     "end_time": "2025-10-31T13:23:05.856526",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.847411",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Question 1: Write your own One-Sample T-Test"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "350d4972",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.878662Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.877043Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.893741Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.891875Z"
+    },
+    "papermill": {
+     "duration": 0.031558,
+     "end_time": "2025-10-31T13:23:05.897252",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.865694",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "my_t_test <- function(x, q=0) {\n",
+    "    alpha = 0.05\n",
+    "    \n",
+    "    dof = length(x) - 1\n",
+    "    mean_x <- mean(x)\n",
+    "    SE <- sd(x) / sqrt(length(x))\n",
+    "    t_value <- mean_x/SE\n",
+    "    t_critical <- unname(quantile(x, prob=1-alpha))\n",
+    "    negative_t_critical <- t_critical * -1\n",
+    "    p_value <- 2*pt(-abs(t_value), dof)\n",
+    "    \n",
+    "    print(paste(\"Computed t_value: \",t_value))\n",
+    "    print(paste(\"Degrees of Freedom: \",dof))\n",
+    "    print(paste(\"p-value: \", format(p_value, scientific = TRUE, digits = 4)))\n",
+    "    print(paste(1-alpha, \"percent confidence interval:\"))\n",
+    "    print(paste(negative_t_critical,t_critical, sep=\",\"))\n",
+    "    \n",
+    "    if (between(t_value, negative_t_critical, t_critical)){\n",
+    "        print(\"Failed to Reject Null Hypothesis\")\n",
+    "    } else {\n",
+    "        print(\"Reject Null Hypothesis\")\n",
+    "    }\n",
+    "        \n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "2812da5d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:05.920318Z",
+     "iopub.status.busy": "2025-10-31T13:23:05.918694Z",
+     "iopub.status.idle": "2025-10-31T13:23:05.978895Z",
+     "shell.execute_reply": "2025-10-31T13:23:05.970594Z"
+    },
+    "papermill": {
+     "duration": 0.07553,
+     "end_time": "2025-10-31T13:23:05.982422",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.906892",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1] \"Computed t_value:  23.4820230262515\"\n",
+      "[1] \"Degrees of Freedom:  4\"\n",
+      "[1] \"p-value:  1.95e-05\"\n",
+      "[1] \"0.95 percent confidence interval:\"\n",
+      "[1] \"-2.26,2.26\"\n",
+      "[1] \"Reject Null Hypothesis\"\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "2.02"
+      ],
+      "text/latex": [
+       "2.02"
+      ],
+      "text/markdown": [
+       "2.02"
+      ],
+      "text/plain": [
+       "[1] 2.02"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x <- c(2.1, 1.8, 2.3, 2.0, 1.9)\n",
+    "my_t_test(x)\n",
+    "mean(x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "7e48c742",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:06.041998Z",
+     "iopub.status.busy": "2025-10-31T13:23:06.040454Z",
+     "iopub.status.idle": "2025-10-31T13:23:06.059329Z",
+     "shell.execute_reply": "2025-10-31T13:23:06.057536Z"
+    },
+    "papermill": {
+     "duration": 0.070027,
+     "end_time": "2025-10-31T13:23:06.061732",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:05.991705",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "\n",
+       "\tOne Sample t-test\n",
+       "\n",
+       "data:  x\n",
+       "t = 23.482, df = 4, p-value = 1.95e-05\n",
+       "alternative hypothesis: true mean is not equal to 0\n",
+       "95 percent confidence interval:\n",
+       " 1.781161 2.258839\n",
+       "sample estimates:\n",
+       "mean of x \n",
+       "     2.02 \n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "t.test(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "466ab103",
+   "metadata": {
+    "papermill": {
+     "duration": 0.009565,
+     "end_time": "2025-10-31T13:23:06.081443",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:06.071878",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Question 2: Write your own F-Test Functin"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "3425a7fa",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:06.104732Z",
+     "iopub.status.busy": "2025-10-31T13:23:06.103204Z",
+     "iopub.status.idle": "2025-10-31T13:23:06.117958Z",
+     "shell.execute_reply": "2025-10-31T13:23:06.116197Z"
+    },
+    "papermill": {
+     "duration": 0.029347,
+     "end_time": "2025-10-31T13:23:06.120484",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:06.091137",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "my_f_test <- function(x, y) {\n",
+    "    alpha <- 0.05\n",
+    "    \n",
+    "    n_x <- length(x)\n",
+    "    n_y <- length(y)\n",
+    "    dof1 <- n_x - 1\n",
+    "    dof2 <- n_y - 1\n",
+    "    \n",
+    "    var_x <- var(x)\n",
+    "    var_y <- var(y)           \n",
+    "    \n",
+    "    f_stat <- var_x/var_y\n",
+    "    \n",
+    "    \n",
+    "    # Compute p-value (two-tailed)\n",
+    "    if (f_stat > 1) {\n",
+    "        p_value <- 2 * pf(f_stat, dof1, dof2, lower.tail = FALSE)\n",
+    "    } else {\n",
+    "        p_value <- 2 * pf(f_stat, dof1, dof2, lower.tail = TRUE)\n",
+    "    }\n",
+    "    \n",
+    "    # Ensure p-value does not exceed 1\n",
+    "    p_value <- min(p_value, 1)\n",
+    "        \n",
+    "    # Decision rule\n",
+    "    if (p_value < alpha) {\n",
+    "        response <- \"Reject Null Hypothesis: Variances are significantly different.\"\n",
+    "    } else {\n",
+    "        response <- \"Fail to Reject Null Hypothesis: Variances are not significantly different.\"\n",
+    "    }\n",
+    "    \n",
+    "    # Return results as a list\n",
+    "    return(list(\n",
+    "        paste(\"Computed F-statistic:\", round(f_stat, 4)),\n",
+    "        paste(\"Degrees of Freedom: df1 =\", dof1, \", df2 =\", dof2),\n",
+    "        paste(\"p-value:\", format(p_value, scientific = TRUE, digits = 4)),\n",
+    "        paste(\"Response:\", response)\n",
+    "    ))\n",
+    "}\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "010a04e4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:06.143414Z",
+     "iopub.status.busy": "2025-10-31T13:23:06.141772Z",
+     "iopub.status.idle": "2025-10-31T13:23:06.158568Z",
+     "shell.execute_reply": "2025-10-31T13:23:06.156821Z"
+    },
+    "papermill": {
+     "duration": 0.031134,
+     "end_time": "2025-10-31T13:23:06.161119",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:06.129985",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "x <- c(5.2, 4.8, 5.0, 5.1, 4.9)\n",
+    "y <- c(6.1, 5.5, 6.3, 5.9, 6.0, 5.7)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "d224927a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:06.184208Z",
+     "iopub.status.busy": "2025-10-31T13:23:06.182606Z",
+     "iopub.status.idle": "2025-10-31T13:23:06.220166Z",
+     "shell.execute_reply": "2025-10-31T13:23:06.218330Z"
+    },
+    "papermill": {
+     "duration": 0.051846,
+     "end_time": "2025-10-31T13:23:06.222746",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:06.170900",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<ol>\n",
+       "\t<li>'Computed F-statistic: 0.3061'</li>\n",
+       "\t<li>'Degrees of Freedom: df1 = 4 , df2 = 5'</li>\n",
+       "\t<li>'p-value: 2.745e-01'</li>\n",
+       "\t<li>'Response: Fail to Reject Null Hypothesis: Variances are not significantly different.'</li>\n",
+       "</ol>\n"
+      ],
+      "text/latex": [
+       "\\begin{enumerate}\n",
+       "\\item 'Computed F-statistic: 0.3061'\n",
+       "\\item 'Degrees of Freedom: df1 = 4 , df2 = 5'\n",
+       "\\item 'p-value: 2.745e-01'\n",
+       "\\item 'Response: Fail to Reject Null Hypothesis: Variances are not significantly different.'\n",
+       "\\end{enumerate}\n"
+      ],
+      "text/markdown": [
+       "1. 'Computed F-statistic: 0.3061'\n",
+       "2. 'Degrees of Freedom: df1 = 4 , df2 = 5'\n",
+       "3. 'p-value: 2.745e-01'\n",
+       "4. 'Response: Fail to Reject Null Hypothesis: Variances are not significantly different.'\n",
+       "\n",
+       "\n"
+      ],
+      "text/plain": [
+       "[[1]]\n",
+       "[1] \"Computed F-statistic: 0.3061\"\n",
+       "\n",
+       "[[2]]\n",
+       "[1] \"Degrees of Freedom: df1 = 4 , df2 = 5\"\n",
+       "\n",
+       "[[3]]\n",
+       "[1] \"p-value: 2.745e-01\"\n",
+       "\n",
+       "[[4]]\n",
+       "[1] \"Response: Fail to Reject Null Hypothesis: Variances are not significantly different.\"\n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "my_f_test(x, y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "1e636fa0",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-10-31T13:23:06.246398Z",
+     "iopub.status.busy": "2025-10-31T13:23:06.244323Z",
+     "iopub.status.idle": "2025-10-31T13:23:06.263385Z",
+     "shell.execute_reply": "2025-10-31T13:23:06.261583Z"
+    },
+    "papermill": {
+     "duration": 0.033513,
+     "end_time": "2025-10-31T13:23:06.265944",
+     "exception": false,
+     "start_time": "2025-10-31T13:23:06.232431",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "\n",
+       "\tF test to compare two variances\n",
+       "\n",
+       "data:  x and y\n",
+       "F = 0.30612, num df = 4, denom df = 5, p-value = 0.2745\n",
+       "alternative hypothesis: true ratio of variances is not equal to 1\n",
+       "95 percent confidence interval:\n",
+       " 0.04143573 2.86667474\n",
+       "sample estimates:\n",
+       "ratio of variances \n",
+       "         0.3061224 \n"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "var.test(x, y)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "datasetId": 8599651,
+     "sourceId": 13541705,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "dockerImageVersionId": 30749,
+   "isGpuEnabled": false,
+   "isInternetEnabled": true,
+   "language": "r",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "R",
+   "language": "R",
+   "name": "ir"
+  },
+  "language_info": {
+   "codemirror_mode": "r",
+   "file_extension": ".r",
+   "mimetype": "text/x-r-source",
+   "name": "R",
+   "pygments_lexer": "r",
+   "version": "4.4.0"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 6.64026,
+   "end_time": "2025-10-31T13:23:06.399194",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2025-10-31T13:22:59.758934",
+   "version": "2.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
